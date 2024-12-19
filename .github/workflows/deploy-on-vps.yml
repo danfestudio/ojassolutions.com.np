@@ -3,26 +3,26 @@ name: Deploy on VPS
 on:
   push:
     branches:
-      - main
+      - main  # Trigger on pushes to the main branch
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted  # Ensure this uses a self-hosted runner configured on your VPS
 
-    steps:     
+    steps:
+      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_PRIVATE_KEY }}
-          script: |
+      # Step 2: Build and run the Docker container
+      - name: Build and Run Docker Container
+        run: |
+        
+          cd /home/cb/projects/ojassolutions.com.np || exit 1
+        
+          docker build -t ojassolutions .
+          
+          docker stop ojassolutions.com.np || true
+          docker rm ojassolutions.com.np || true          
          
-            cd /home/cb/projects/ojassolutions.com.np || exit 1      
-                   
-            docker build -t ojassolutions .  
-
-            docker run -d --name ojassolutions.com.np -p 8001:8001 ojassolutions
+          docker run -d --name ojassolutions.com.np -p 8001:8001 ojassolutions
