@@ -21,10 +21,8 @@ jobs:
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
          
-            cd /home/cb/projects/ojassolutions.com.np || exit 1
-        
-            git pull origin main || exit 1
-           
+            cd /home/cb/projects/ojassolutions.com.np || exit 1      
+                   
             docker build -t ojassolutions .  
 
             docker run -d --name ojassolutions.com.np -p 8001:8001 ojassolutions
