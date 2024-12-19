@@ -1,0 +1,30 @@
+name: Deploy on VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:     
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          script: |
+         
+            cd /home/cb/projects/ojassolutions.com.np || exit 1
+        
+            git pull origin main || exit 1
+           
+            docker build -t ojassolutions .  
+
+            docker run -d --name ojassolutions.com.np -p 8001:8001 ojassolutions
