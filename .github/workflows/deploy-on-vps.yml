@@ -22,6 +22,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           port: 22
+          
           script: |
             echo "SSH into VPS..."
             cd /home/cb/projects/ojassolutions.com.np || exit 1
