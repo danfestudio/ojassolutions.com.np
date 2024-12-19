@@ -22,20 +22,16 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           port: 22
-          
+
           script: |
-            echo "SSH into VPS..."
+            
             cd /home/cb/projects/ojassolutions.com.np || exit 1
-
-            echo "Pulling latest changes..."
+            
             git pull origin main || exit 1
-
-            echo "Building Docker image..."
+            
             docker build -t ojassolutions .
-
-            echo "Stopping existing container (if any)..."
+            
             docker stop ojassolutions.com.np || true
             docker rm ojassolutions.com.np || true
-
-            echo "Running new container..."
+            
             docker run -d --name ojassolutions.com.np -p 8001:80 ojassolutions
